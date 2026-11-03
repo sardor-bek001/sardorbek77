@@ -963,4 +963,372 @@ document.addEventListener("DOMContentLoaded", function () {
       toast("Kupon nusxalandi: HUNGRY20");
     });
   }, 25000);
+});/* add.js: add.html bo'limlari uchun. script.js dan KEYIN ulang. */
+document.addEventListener("DOMContentLoaded", function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  function toast(m) {
+    var t = $("#toast"); if (!t) return;
+    t.textContent = m; t.classList.add("show");
+    clearTimeout(toast.t); toast.t = setTimeout(function () { t.classList.remove("show"); }, 2200);
+  }
+  function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+
+  // Menyu kartasini nomi bo'yicha topish
+  function findItem(name) {
+    return $$(".menu-item").filter(function (it) { return $("h4", it).textContent.trim() === name; })[0];
+  }
+  function priceOf(it) { return parseFloat($(".menu-header span", it).textContent.replace("$", "")); }
+
+  // 1. Kombolar: narxni hisoblash va savatga qo'shish
+  $$(".ax-combo").forEach(function (c) {
+    var names = c.dataset.items.split("|");
+    var sum = 0;
+    names.forEach(function (n) { var it = findItem(n); if (it) sum += priceOf(it); });
+    $(".ax-price", c).innerHTML = "$" + sum.toFixed(2) + "<small>" + names.length + " ta taom</small>";
+    $(".ax-combo-btn", c).addEventListener("click", function () {
+      var added = 0;
+      names.forEach(function (n) {
+        var it = findItem(n), b = it && $(".add-cart-btn", it);
+        if (b) { b.click(); added++; }
+      });
+      if (added) toast("Kombo savatchaga qo'shildi"); 
+    });
+  });
+
+  // 2. Yetkazib berish kalkulyatori
+  var calc = $("#axCalc");
+  if (calc) calc.addEventListener("click", function () {
+    var fee = parseFloat($("#axDistrict").value), sum = parseFloat($("#axSum").value) || 0;
+    var box = $("#axDeliveryResult");
+    if (isNaN(fee)) { toast("Hududni tanlang"); return; }
+    var free = sum >= 50;
+    box.classList.add("show");
+    box.innerHTML = "Yetkazib berish: <strong>" + (free ? "BEPUL" : "$" + fee.toFixed(2)) + "</strong><br>" +
+      "Taxminiy vaqt: <strong>" + (fee <= 2 ? "30" : "40") + "-45 daqiqa</strong><br>" +
+      "Jami: <strong>$" + (sum + (free ? 0 : fee)).toFixed(2) + "</strong>" +
+      (free ? "" : "<br><small>$50 dan oshsa yetkazib berish bepul!</small>");
+  });
+
+  // 3. Fikr qoldirish (localStorage)
+  var form = $("#axReviewForm");
+  if (form) {
+    var rating = 5, rate = $("#axRate"), list = $("#axReviews");
+    var paint = function (n) { $$("i", rate).forEach(function (s) { s.classList.toggle("on", +s.dataset.v <= n); }); };
+    paint(rating);
+    rate.addEventListener("click", function (e) { if (e.target.dataset.v) { rating = +e.target.dataset.v; paint(rating); } });
+    var load = function () { try { return JSON.parse(localStorage.getItem("axReviews") || "[]"); } catch (e) { return []; } };
+    var save = function (a) { try { localStorage.setItem("axReviews", JSON.stringify(a)); } catch (e) {} };
+    var render = function () {
+      list.innerHTML = load().map(function (r, i) {
+        return '<div class="ax-review"><button data-i="' + i + '" aria-label="O\'chirish">&times;</button><b>' + esc(r.name) + '</b><span class="st">' + "★".repeat(r.stars) + "☆".repeat(5 - r.stars) + "</span><p>" + esc(r.text) + "</p></div>";
+      }).reverse().join("");
+    };
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var a = load();
+      a.push({ name: $("#axRName").value.trim(), text: $("#axRText").value.trim(), stars: rating });
+      save(a); render(); form.reset(); rating = 5; paint(5);
+      toast("Fikringiz uchun rahmat!");
+    });
+    list.addEventListener("click", function (e) {
+      var i = e.target.getAttribute("data-i"); if (i === null) return;
+      var a = load(); a.splice(+i, 1); save(a); render();
+    });
+    render();
+  }
+});/* wow.js: eng oxirida ulang (script.js, more.js, plus.js, add.js dan keyin). Mavjud kodga tegmaydi. */
+document.addEventListener("DOMContentLoaded", function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
+  var calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // 1. Hero: suzuvchi oltin zarrachalar
+  var hero = $(".hero");
+  if (hero && !calm) {
+    var cv = document.createElement("canvas");
+    cv.className = "hero-canvas";
+    hero.insertBefore(cv, hero.firstChild);
+    var ctx = cv.getContext("2d"), W, H, ps = [], mouse = { x: -999, y: -999 };
+    var fit = function () { W = cv.width = hero.clientWidth; H = cv.height = hero.clientHeight; };
+    fit(); addEventListener("resize", fit);
+    for (var i = 0; i < 70; i++) ps.push({ x: Math.random() * 1500, y: Math.random() * 900, r: 1 + Math.random() * 2.5, vx: (Math.random() - .5) * .4, vy: -.2 - Math.random() * .6 });
+    hero.addEventListener("mousemove", function (e) { var b = hero.getBoundingClientRect(); mouse.x = e.clientX - b.left; mouse.y = e.clientY - b.top; });
+    (function loop() {
+      ctx.clearRect(0, 0, W, H);
+      ps.forEach(function (p) {
+        var dx = p.x - mouse.x, dy = p.y - mouse.y, d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 110) { p.x += dx / d * 2.2; p.y += dy / d * 2.2; }
+        p.x += p.vx; p.y += p.vy;
+        if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
+        if (p.x < -10) p.x = W + 10; if (p.x > W + 10) p.x = -10;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283);
+        ctx.fillStyle = "rgba(232,195,0," + (.3 + p.r / 5) + ")"; ctx.fill();
+      });
+      requestAnimationFrame(loop);
+    })();
+
+    // 2. Parallax + so'nish (hero matni)
+    var hc = $(".hero-content", hero), tick = false;
+    addEventListener("scroll", function () {
+      if (tick) return; tick = true;
+      requestAnimationFrame(function () {
+        var y = scrollY;
+        if (y < innerHeight) { hc.style.transform = "translateY(" + y * .28 + "px)"; hc.style.opacity = 1 - y / (innerHeight * .8); }
+        tick = false;
+      });
+    });
+  }
+
+  // 3. Marquee tasma (hero ostida)
+  if (hero) {
+    var words = ["FRESH", "TASTY", "HOT", "HOMEMADE", "SAMARKAND", "HUNGRY PEOPLE"];
+    var unit = words.map(function (w) { return "<span>" + w + "</span><i class=\"fa-solid fa-star\"></i>"; }).join("");
+    var m = document.createElement("div");
+    m.className = "wow-marquee";
+    m.innerHTML = '<div class="wow-track">' + unit + unit + unit + unit + "</div>";
+    hero.parentNode.insertBefore(m, hero.nextSibling);
+  }
+
+  // 4. Maxsus kursor
+  if (fine && !calm) {
+    var ring = document.createElement("div"), dot = document.createElement("div");
+    ring.className = "wow-ring"; dot.className = "wow-dot";
+    document.body.appendChild(ring); document.body.appendChild(dot);
+    var tx = 0, ty = 0, rx = 0, ry = 0;
+    addEventListener("mousemove", function (e) {
+      tx = e.clientX; ty = e.clientY;
+      dot.style.transform = "translate(" + tx + "px," + ty + "px)";
+      ring.classList.add("on"); dot.classList.add("on");
+      ring.classList.toggle("big", !!e.target.closest("a, button, .menu-item, .gallery-item, .faq-q, .flip-card, .info-card"));
+    });
+    document.addEventListener("mouseleave", function () { ring.classList.remove("on"); dot.classList.remove("on"); });
+    (function follow() {
+      rx += (tx - rx) * .16; ry += (ty - ry) * .16;
+      ring.style.transform = "translate(" + rx + "px," + ry + "px)";
+      requestAnimationFrame(follow);
+    })();
+  }
+
+  // 5. Ripple (tugmalar bosilganda)
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest(".btn, .menu-btn, .add-cart-btn");
+    if (!b) return;
+    var r = b.getBoundingClientRect(), s = Math.max(r.width, r.height), sp = document.createElement("span");
+    sp.className = "wow-ripple";
+    sp.style.cssText = "width:" + s + "px;height:" + s + "px;left:" + (e.clientX - r.left - s / 2) + "px;top:" + (e.clientY - r.top - s / 2) + "px";
+    b.appendChild(sp); setTimeout(function () { sp.remove(); }, 650);
+  });
+
+  if (fine && !calm) {
+    // 6. 3D tilt kartalar
+    $$(".image-block, .ax-combo, .ax-step, .stat-item, .info-card").forEach(function (el) {
+      el.classList.add("wow-tilt");
+      el.addEventListener("mousemove", function (e) {
+        var b = el.getBoundingClientRect(), x = (e.clientX - b.left) / b.width - .5, y = (e.clientY - b.top) / b.height - .5;
+        el.style.transition = "transform .1s";
+        el.style.transform = "perspective(800px) rotateY(" + x * 12 + "deg) rotateX(" + -y * 12 + "deg) scale(1.02)";
+      });
+      el.addEventListener("mouseleave", function () { el.style.transition = "transform .5s"; el.style.transform = ""; });
+    });
+
+    // 7. Magnit tugmalar
+    $$(".hero .btn, .booking-form .btn, .contact-form .btn, .ax-combo-btn").forEach(function (b) {
+      b.addEventListener("mousemove", function (e) {
+        var r = b.getBoundingClientRect();
+        b.style.transform = "translate(" + (e.clientX - r.left - r.width / 2) * .25 + "px," + (e.clientY - r.top - r.height / 2) * .35 + "px)";
+      });
+      b.addEventListener("mouseleave", function () { b.style.transform = ""; });
+    });
+  }
+
+  // 8. Menyu spotlight (sichqoncha izidan yorug'lik)
+  $$(".menu-item").forEach(function (it) {
+    it.addEventListener("mousemove", function (e) {
+      var r = it.getBoundingClientRect();
+      it.style.setProperty("--mx", e.clientX - r.left + "px");
+      it.style.setProperty("--my", e.clientY - r.top + "px");
+    });
+  });
+
+  // 9. Sarlavhalar "harflar aralashib" paydo bo'ladi
+  if (!calm) {
+    var L = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var so = new IntersectionObserver(function (en) {
+      en.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        so.unobserve(e.target);
+        var el = e.target, txt = el.dataset.t, n = 0;
+        var t = setInterval(function () {
+          n += .5;
+          el.textContent = txt.split("").map(function (c, i) {
+            return c === " " || i < n ? c : L[Math.floor(Math.random() * 26)];
+          }).join("");
+          if (n >= txt.length) { el.textContent = txt; clearInterval(t); }
+        }, 40);
+      });
+    }, { threshold: 0.6 });
+    $$(".section h2").forEach(function (h) {
+      if (h.children.length) return;
+      h.dataset.t = h.textContent; so.observe(h);
+    });
+  }
+});/* epic.js: eng oxirida ulang. Mavjud kodga tegmaydi. */
+document.addEventListener("DOMContentLoaded", function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function toast(m) {
+    var t = $("#toast"); if (!t) return;
+    t.textContent = m; t.classList.add("show");
+    clearTimeout(toast.t); toast.t = setTimeout(function () { t.classList.remove("show"); }, 2600);
+  }
+  function copy(s) { if (navigator.clipboard) navigator.clipboard.writeText(s).catch(function () {}); }
+
+  /* 1. OMAD G'ILDIRAGI (kuniga 1 marta) */
+  var prizes = [
+    { t: "5%", c: "#e8c300", code: "SPIN5", msg: "5% chegirma" },
+    { t: "Ichimlik", c: "#e74c3c", code: "FREEDRINK", msg: "bepul ichimlik" },
+    { t: "10%", c: "#2ecc71", code: "SPIN10", msg: "10% chegirma" },
+    { t: "Yana!", c: "#555", code: null, msg: "" },
+    { t: "15%", c: "#3498db", code: "SPIN15", msg: "15% chegirma" },
+    { t: "Desert", c: "#9b59b6", code: "FREEDESSERT", msg: "bepul desert" },
+    { t: "20%", c: "#e67e22", code: "SPIN20", msg: "20% chegirma" },
+    { t: "Yana!", c: "#555", code: null, msg: "" }
+  ];
+  var fab = document.createElement("button");
+  fab.className = "wheel-fab"; fab.setAttribute("aria-label", "Omad g'ildiragi");
+  fab.innerHTML = '<i class="fa-solid fa-dharmachakra"></i>';
+  document.body.appendChild(fab);
+  var ov = document.createElement("div");
+  ov.className = "wheel-overlay";
+  ov.innerHTML = '<div class="wheel-box"><span class="wheel-x">&times;</span><h3>OMAD G\'ILDIRAGI</h3>' +
+    '<div class="wheel-wrap"><div class="wheel-pin"></div><canvas width="560" height="560"></canvas><div class="wheel-hub"><i class="fa-solid fa-utensils"></i></div></div>' +
+    '<div class="wheel-res"></div><button class="btn btn-yellow" id="wheelSpin" style="border:none">AYLANTIRISH</button></div>';
+  document.body.appendChild(ov);
+  var cv = $("canvas", ov), ctx = cv.getContext("2d"), arc = Math.PI * 2 / prizes.length, rot = 0, spinning = false;
+  function draw() {
+    ctx.clearRect(0, 0, 560, 560);
+    prizes.forEach(function (p, i) {
+      var a = rot + i * arc;
+      ctx.beginPath(); ctx.moveTo(280, 280); ctx.arc(280, 280, 270, a, a + arc); ctx.closePath();
+      ctx.fillStyle = p.c; ctx.fill(); ctx.strokeStyle = "#111"; ctx.lineWidth = 4; ctx.stroke();
+      ctx.save(); ctx.translate(280, 280); ctx.rotate(a + arc / 2);
+      ctx.fillStyle = "#fff"; ctx.font = "bold 34px sans-serif"; ctx.textAlign = "right";
+      ctx.fillText(p.t, 245, 12); ctx.restore();
+    });
+  }
+  draw();
+  var today = new Date().toDateString();
+  function open() { ov.classList.add("open"); }
+  fab.addEventListener("click", open);
+  $(".wheel-x", ov).addEventListener("click", function () { ov.classList.remove("open"); });
+  ov.addEventListener("click", function (e) { if (e.target === ov) ov.classList.remove("open"); });
+  $("#wheelSpin").addEventListener("click", function () {
+    var res = $(".wheel-res", ov);
+    if (spinning) return;
+    if (store.get("wheelDay", "") === today) { res.innerHTML = "Bugungi urinish ishlatilgan. Ertaga qayting!"; return; }
+    spinning = true; res.textContent = "";
+    var idx = Math.floor(Math.random() * prizes.length);
+    var target = -Math.PI / 2 - (idx + .5) * arc + Math.PI * 2 * (5 + Math.floor(Math.random() * 3));
+    var start = rot % (Math.PI * 2), t0 = performance.now(), dur = 4500;
+    (function step(now) {
+      var k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      rot = start + (target - start) * e; draw();
+      if (k < 1) return requestAnimationFrame(step);
+      spinning = false;
+      var p = prizes[idx];
+      if (p.code) {
+        store.set("wheelDay", today);
+        res.innerHTML = "Tabriklaymiz! Siz yutdingiz: <b>" + p.msg + "</b><br>Kod: <b>" + p.code + "</b> (nusxalandi)";
+        copy(p.code); toast("Yutuq kodi: " + p.code);
+        window.dispatchEvent(new Event("resize"));
+      } else res.innerHTML = "Yana bir bor aylantiring!";
+    })(t0);
+  });
+
+  /* 2. JONLI BUYURTMALAR (ijtimoiy isbot) */
+  var names = ["Aziz", "Madina", "Jasur", "Dilnoza", "Bobur", "Zarina", "Sardor", "Nilufar"];
+  var dishes = $$(".menu-item h4").map(function (h) { return h.textContent.trim().toLowerCase(); });
+  if (dishes.length) {
+    var lo = document.createElement("div");
+    lo.className = "live-order";
+    document.body.appendChild(lo);
+    var loop = function () {
+      var n = names[Math.floor(Math.random() * names.length)], d = dishes[Math.floor(Math.random() * dishes.length)];
+      lo.innerHTML = '<i class="fa-solid fa-bag-shopping"></i><div><b>' + n + "</b> hozirgina buyurtma berdi<small>" + d + " · " + (1 + Math.floor(Math.random() * 9)) + " daqiqa oldin</small></div>";
+      lo.classList.add("show");
+      setTimeout(function () { lo.classList.remove("show"); }, 4500);
+      setTimeout(loop, 14000 + Math.random() * 10000);
+    };
+    setTimeout(loop, 9000);
+  }
+
+  /* 3. INTERAKTIV STOL XARITASI */
+  var wrap = $(".booking-form-wrapper"), form = $("#bookingForm");
+  if (wrap && form) {
+    var seats = [2, 2, 4, 4, 2, 6, 4, 2, 6, 4, 2, 4];
+    var seed = new Date().getDate();
+    var taken = store.get("tablesTaken", {});
+    if (taken.day !== today) taken = { day: today, list: [] };
+    var randomTaken = function (i) { return ((i * 7 + seed * 3) % 5) === 0; };
+    var floor = document.createElement("div");
+    floor.className = "floor";
+    floor.innerHTML = "<h4>STOLNI XARITADAN TANLANG</h4><p class=\"floor-hint\">Bo'sh stolni bosing</p><div class=\"floor-plan\"></div>" +
+      '<div class="floor-legend"><span><i style="background:#2ecc71"></i>Bo\'sh</span><span><i style="background:#e74c3c"></i>Band</span><span><i style="background:#e8c300"></i>Tanlangan</span></div><div class="floor-sel"></div>';
+    wrap.appendChild(floor);
+    var plan = $(".floor-plan", floor), info = $(".floor-sel", floor), chosen = null;
+    var paint = function () {
+      plan.innerHTML = seats.map(function (s, i) {
+        var isTaken = randomTaken(i) || taken.list.indexOf(i) > -1;
+        return '<div class="tbl' + (isTaken ? " taken" : "") + (chosen === i ? " sel" : "") + '" data-i="' + i + '">' + (i + 1) + "<small>" + s + " kishi</small></div>";
+      }).join("");
+    };
+    paint();
+    plan.addEventListener("click", function (e) {
+      var t = e.target.closest(".tbl");
+      if (!t || t.classList.contains("taken")) return;
+      chosen = +t.dataset.i; paint();
+      var ppl = $("#people"); if (ppl) ppl.value = String(seats[chosen]);
+      info.textContent = "Stol №" + (chosen + 1) + " tanlandi (" + seats[chosen] + " kishilik)";
+    });
+    form.addEventListener("submit", function () {
+      if (chosen === null) return;
+      taken.list.push(chosen); store.set("tablesTaken", taken);
+      toast("Stol №" + (chosen + 1) + " siz uchun band qilindi!");
+      chosen = null; info.textContent = ""; paint();
+    }, true);
+  }
+
+  /* 4. PASXALKA: logotipni 5 marta bossangiz yoki Konami kodi -> taom yomg'iri */
+  function rain() {
+    var em = ["🍕", "🍔", "🍝", "🥤", "🍰", "🥞", "🍟", "🍲"];
+    for (var i = 0; i < 45; i++) (function (i) {
+      setTimeout(function () {
+        var s = document.createElement("span");
+        s.className = "food-rain"; s.textContent = em[Math.floor(Math.random() * em.length)];
+        s.style.left = Math.random() * 100 + "vw";
+        s.style.animationDuration = 2.5 + Math.random() * 2.5 + "s";
+        document.body.appendChild(s); setTimeout(function () { s.remove(); }, 5200);
+      }, i * 80);
+    })(i);
+    toast("Siz yashirin sirni topdingiz! 🎉");
+  }
+  var clicks = 0, ct;
+  $$(".logo").forEach(function (l) {
+    l.style.cursor = "pointer";
+    l.addEventListener("click", function () {
+      clearTimeout(ct); ct = setTimeout(function () { clicks = 0; }, 1200);
+      if (++clicks >= 5) { clicks = 0; rain(); }
+    });
+  });
+  var seq = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"], pos = 0;
+  document.addEventListener("keydown", function (e) {
+    pos = (e.key === seq[pos]) ? pos + 1 : (e.key === seq[0] ? 1 : 0);
+    if (pos === seq.length) { pos = 0; rain(); }
+  });
 });

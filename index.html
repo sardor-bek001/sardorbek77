@@ -413,6 +413,101 @@
 
 <!-- QO'SHIMCHA: TOAST -->
 <div id="toast" class="toast"></div>
+<!-- ======================================================
+  ADD.HTML: index.html ichiga qo'shiladigan yangi bo'limlar.
+  Qayerga: "<!-- QO'SHIMCHA: LIGHTBOX -->" izohidan OLDIN qo'ying.
+  Mavjud kodga tegilmaydi.
+====================================================== -->
+
+<!-- QO'SHIMCHA: QANDAY ISHLAYDI -->
+<section id="how" class="section light-bg">
+  <div class="container center-text">
+    <h2>HOW IT WORKS</h2>
+    <div class="line yellow-line"></div>
+    <p class="sub-desc">Buyurtma berish juda oson, atigi 3 qadam.</p>
+    <div class="ax-steps">
+      <div class="ax-step"><span class="ax-num">1</span><i class="fa-solid fa-book-open"></i><h4>TANLANG</h4><p>Menyudan sevimli taomingizni tanlang.</p></div>
+      <div class="ax-step"><span class="ax-num">2</span><i class="fa-solid fa-basket-shopping"></i><h4>BUYURTMA BERING</h4><p>Savatchaga qo'shing va tasdiqlang.</p></div>
+      <div class="ax-step"><span class="ax-num">3</span><i class="fa-solid fa-utensils"></i><h4>YEYING</h4><p>Issiq taom stolingizga yoki eshigingizga yetadi.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- QO'SHIMCHA: KOMBO TAKLIFLAR -->
+<section id="combos" class="section dark-bg">
+  <div class="container center-text">
+    <h2>COMBO OFFERS</h2>
+    <div class="line yellow-line"></div>
+    <p class="sub-desc" style="color:#ccc">Bir bosishda bir nechta taomni savatchaga qo'shing.</p>
+    <div class="ax-combos">
+      <div class="ax-combo" data-items="PIZZA WITH MUSHROOMS|FRESH ORANGE JUICE|SPECIAL CHOCOLATE CAKE">
+        <h3>OILAVIY SET</h3>
+        <ul><li>Pizza with mushrooms</li><li>Fresh orange juice</li><li>Special chocolate cake</li></ul>
+        <div class="ax-price"></div>
+        <button class="btn btn-yellow ax-combo-btn">SAVATGA QO'SHISH</button>
+      </div>
+      <div class="ax-combo" data-items="PASTA WITH TOMATO SAUCE|FRESH ORANGE JUICE">
+        <h3>PASTA SET</h3>
+        <ul><li>Pasta with tomato sauce</li><li>Fresh orange juice</li></ul>
+        <div class="ax-price"></div>
+        <button class="btn btn-yellow ax-combo-btn">SAVATGA QO'SHISH</button>
+      </div>
+      <div class="ax-combo" data-items="CHEESE BURGER MENU|FRESH ORANGE JUICE">
+        <h3>BURGER SET</h3>
+        <ul><li>Cheese burger menu</li><li>Fresh orange juice</li></ul>
+        <div class="ax-price"></div>
+        <button class="btn btn-yellow ax-combo-btn">SAVATGA QO'SHISH</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QO'SHIMCHA: YETKAZIB BERISH KALKULYATORI -->
+<section id="delivery" class="section light-bg">
+  <div class="container center-text">
+    <h2>DELIVERY</h2>
+    <div class="line yellow-line"></div>
+    <p class="sub-desc">Hududingizni tanlang, yetkazib berish narxi va vaqtini bilib oling.</p>
+    <div class="ax-delivery">
+      <select id="axDistrict">
+        <option value="" disabled selected>Hududni tanlang</option>
+        <option value="1.5">Registon atrofi</option>
+        <option value="2">Universitet xiyoboni</option>
+        <option value="2.5">Siyob bozori</option>
+        <option value="3">Dagbit</option>
+      </select>
+      <input type="number" id="axSum" min="0" step="1" placeholder="Buyurtma summasi ($)">
+      <button id="axCalc" class="btn btn-yellow">HISOBLASH</button>
+    </div>
+    <div id="axDeliveryResult" class="ax-result"></div>
+  </div>
+</section>
+
+<!-- QO'SHIMCHA: FIKR QOLDIRISH -->
+<section id="review" class="section dark-bg">
+  <div class="container center-text">
+    <h2>LEAVE A REVIEW</h2>
+    <div class="line yellow-line"></div>
+    <form id="axReviewForm" class="ax-review-form">
+      <input type="text" id="axRName" placeholder="Ismingiz" required maxlength="30">
+      <div class="ax-rate" id="axRate" aria-label="Baho">
+        <i class="fa-solid fa-star" data-v="1"></i><i class="fa-solid fa-star" data-v="2"></i><i class="fa-solid fa-star" data-v="3"></i><i class="fa-solid fa-star" data-v="4"></i><i class="fa-solid fa-star" data-v="5"></i>
+      </div>
+      <textarea id="axRText" rows="3" placeholder="Fikringiz..." required maxlength="200"></textarea>
+      <button type="submit" class="btn btn-yellow">YUBORISH</button>
+    </form>
+    <div id="axReviews" class="ax-reviews"></div>
+  </div>
+</section>
+
+<!-- QO'SHIMCHA: IJTIMOIY TARMOQLAR QATORI -->
+<div class="ax-social">
+  <span>BIZNI KUZATING:</span>
+  <a href="https://t.me/" target="_blank" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+  <a href="https://instagram.com/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+  <a href="https://facebook.com/" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+  <a href="https://youtube.com/" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+</div>
 
   <script src="script.js"></script>
 </body>

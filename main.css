@@ -893,5 +893,128 @@ body.dark-mode .menu-tools input, body.dark-mode .menu-tools select { background
 .promo-box .code { display: inline-block; margin: 18px 0; padding: 10px 22px; background: #e8c300; color: #111; font-weight: 800; letter-spacing: 3px; border-radius: 4px; cursor: pointer; }
 .promo-x { position: absolute; top: 8px; right: 16px; font-size: 28px; cursor: pointer; color: #aaa; }
 
-@media (max-width: 768px) { .side-dots { display: none; } .info-cards { grid-template-columns: 1fr; } }
+@media (max-width: 768px) { .side-dots { display: none; } .info-cards { grid-template-columns: 1fr; } }/* ===== ADD.CSS: add.html bo'limlari uchun (main.css ostiga ulang) ===== */
+.ax-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 20px; }
+.ax-step { position: relative; padding: 35px 20px 25px; border: 2px solid #eee; border-radius: 10px; transition: transform .3s, border-color .3s; }
+.ax-step:hover { transform: translateY(-6px); border-color: #e8c300; }
+.ax-step i { font-size: 34px; color: #e8c300; margin-bottom: 12px; }
+.ax-step h4 { letter-spacing: 2px; margin-bottom: 6px; }
+.ax-step p { font-size: 13px; color: #777; }
+.ax-num { position: absolute; top: -16px; left: 50%; transform: translateX(-50%); width: 34px; height: 34px; border-radius: 50%; background: #e8c300; color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; }
 
+.ax-combos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-top: 20px; }
+.ax-combo { background: #1b1b1b; border: 2px solid #e8c300; border-radius: 10px; padding: 30px 22px; transition: transform .3s; }
+.ax-combo:hover { transform: translateY(-6px); }
+.ax-combo h3 { color: #e8c300; letter-spacing: 3px; margin-bottom: 14px; }
+.ax-combo ul { list-style: none; margin-bottom: 16px; font-size: 14px; color: #ccc; }
+.ax-combo li { padding: 5px 0; border-bottom: 1px dotted #444; }
+.ax-price { font-size: 30px; font-weight: 800; margin-bottom: 16px; }
+.ax-price small { display: block; font-size: 12px; font-weight: 400; color: #999; }
+.ax-combo-btn { border: none; }
+
+.ax-delivery { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.ax-delivery select, .ax-delivery input { padding: 12px 18px; border: 2px solid #e8c300; border-radius: 30px; outline: none; font-size: 14px; min-width: 220px; background: #fff; color: #333; }
+.ax-delivery .btn { border-radius: 30px; border: none; }
+.ax-result { margin: 25px auto 0; max-width: 480px; padding: 0 20px; font-size: 15px; line-height: 1.9; }
+.ax-result.show { padding: 18px 20px; border: 2px dashed #e8c300; border-radius: 10px; background: rgba(232,195,0,.08); }
+.ax-result strong { color: #e8c300; }
+
+.ax-review-form { display: flex; flex-direction: column; gap: 14px; max-width: 520px; margin: 20px auto 0; align-items: center; }
+.ax-review-form input, .ax-review-form textarea { width: 100%; padding: 12px 16px; border: 1px solid #444; border-radius: 6px; background: #1c1c1c; color: #fff; outline: none; font-size: 14px; }
+.ax-review-form input:focus, .ax-review-form textarea:focus { border-color: #e8c300; }
+.ax-rate i { font-size: 28px; color: #555; cursor: pointer; margin: 0 3px; transition: transform .2s, color .2s; }
+.ax-rate i:hover { transform: scale(1.2); }
+.ax-rate i.on { color: #e8c300; }
+.ax-reviews { max-width: 700px; margin: 35px auto 0; display: grid; gap: 14px; text-align: left; }
+.ax-review { background: #1b1b1b; border-left: 4px solid #e8c300; border-radius: 6px; padding: 14px 18px; position: relative; }
+.ax-review b { color: #e8c300; }
+.ax-review .st { color: #e8c300; font-size: 13px; margin-left: 8px; }
+.ax-review p { font-size: 14px; color: #ccc; margin-top: 4px; }
+.ax-review button { position: absolute; top: 8px; right: 12px; background: none; border: none; color: #888; cursor: pointer; font-size: 18px; }
+
+.ax-social { background: #0c0c0c; color: #999; text-align: center; padding: 18px; display: flex; justify-content: center; align-items: center; gap: 16px; flex-wrap: wrap; font-size: 12px; letter-spacing: 2px; border-bottom: 1px solid #222; }
+.ax-social a { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #e8c300; color: #e8c300; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all .3s; }
+.ax-social a:hover { background: #e8c300; color: #111; transform: translateY(-3px); }
+
+body.dark-mode .ax-step { border-color: #333; }
+body.dark-mode .ax-delivery select, body.dark-mode .ax-delivery input { background: #222; color: #fff; }
+
+@media (max-width: 768px) { .ax-steps, .ax-combos { grid-template-columns: 1fr; } }/* ===== WOW.CSS ===== */
+.hero { position: relative; }
+.hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.hero-content { position: relative; z-index: 1; will-change: transform, opacity; }
+
+/* Marquee tasma */
+.wow-marquee { background: #e8c300; color: #111; overflow: hidden; white-space: nowrap; padding: 14px 0; font-weight: 800; letter-spacing: 4px; font-size: 14px; transform: rotate(-1deg); margin: -10px -10px 0; position: relative; z-index: 5; box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+.wow-track { display: inline-block; animation: wowScroll 28s linear infinite; }
+.wow-marquee:hover .wow-track { animation-play-state: paused; }
+.wow-track span { margin: 0 22px; }
+.wow-track i { margin: 0 6px; font-size: 12px; }
+@keyframes wowScroll { to { transform: translateX(-50%); } }
+
+/* Maxsus kursor */
+.wow-ring { position: fixed; left: 0; top: 0; width: 38px; height: 38px; margin: -19px 0 0 -19px; border: 2px solid #e8c300; border-radius: 50%; pointer-events: none; z-index: 99998; transition: width .25s, height .25s, margin .25s, background .25s, opacity .3s; opacity: 0; }
+.wow-ring.on { opacity: 1; }
+.wow-ring.big { width: 64px; height: 64px; margin: -32px 0 0 -32px; background: rgba(232,195,0,.18); }
+.wow-dot { position: fixed; left: 0; top: 0; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; background: #e8c300; border-radius: 50%; pointer-events: none; z-index: 99999; opacity: 0; }
+.wow-dot.on { opacity: 1; }
+
+/* Ripple */
+.btn, .menu-btn, .add-cart-btn { position: relative; overflow: hidden; }
+.wow-ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,.55); transform: scale(0); animation: wowRipple .6s ease-out forwards; pointer-events: none; }
+@keyframes wowRipple { to { transform: scale(4); opacity: 0; } }
+
+/* Menyu kartasi spotlight */
+.menu-item { padding: 14px; border-radius: 8px; overflow: hidden; }
+.menu-item::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle 120px at var(--mx, 50%) var(--my, 50%), rgba(232,195,0,.22), transparent 70%); opacity: 0; transition: opacity .3s; pointer-events: none; }
+.menu-item:hover::before { opacity: 1; }
+
+/* 3D tilt */
+.wow-tilt { transform-style: preserve-3d; will-change: transform; }
+
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .wow-ring, .wow-dot { display: none; }
+  .wow-track { animation: none; }
+}/* ===== EPIC.CSS ===== */
+/* Omad g'ildiragi */
+.wheel-fab { position: fixed; left: 20px; bottom: 140px; width: 50px; height: 50px; border-radius: 50%; border: none; background: linear-gradient(135deg, #e74c3c, #e8c300); color: #fff; font-size: 20px; cursor: pointer; z-index: 150; box-shadow: 0 4px 14px rgba(0,0,0,.4); animation: wheelWiggle 2.5s infinite; }
+@keyframes wheelWiggle { 0%, 80%, 100% { transform: rotate(0); } 85% { transform: rotate(-18deg); } 92% { transform: rotate(18deg); } }
+.wheel-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.8); z-index: 8000; display: none; align-items: center; justify-content: center; }
+.wheel-overlay.open { display: flex; }
+.wheel-box { background: #111; border: 3px solid #e8c300; border-radius: 14px; padding: 28px 24px; width: 92%; max-width: 380px; text-align: center; color: #fff; position: relative; animation: popIn .4s ease; }
+.wheel-box h3 { color: #e8c300; letter-spacing: 3px; margin-bottom: 14px; }
+.wheel-wrap { position: relative; width: 280px; height: 280px; margin: 0 auto 16px; max-width: 100%; }
+.wheel-wrap canvas { width: 100%; height: 100%; }
+.wheel-pin { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 26px solid #e74c3c; z-index: 2; filter: drop-shadow(0 2px 3px rgba(0,0,0,.5)); }
+.wheel-hub { position: absolute; top: 50%; left: 50%; width: 46px; height: 46px; margin: -23px; border-radius: 50%; background: #111; border: 4px solid #e8c300; color: #e8c300; display: flex; align-items: center; justify-content: center; }
+.wheel-x { position: absolute; top: 6px; right: 14px; font-size: 28px; color: #aaa; cursor: pointer; }
+.wheel-res { min-height: 52px; font-size: 15px; margin-bottom: 10px; }
+.wheel-res b { color: #e8c300; font-size: 20px; letter-spacing: 2px; }
+
+/* Jonli buyurtmalar */
+.live-order { position: fixed; left: 85px; bottom: 20px; max-width: 270px; background: #fff; color: #333; border-left: 5px solid #e8c300; border-radius: 8px; padding: 10px 14px; font-size: 12px; box-shadow: 0 6px 20px rgba(0,0,0,.3); z-index: 140; display: flex; gap: 10px; align-items: center; opacity: 0; transform: translateX(-30px); transition: all .5s; pointer-events: none; }
+.live-order.show { opacity: 1; transform: none; }
+.live-order i { color: #e8c300; font-size: 20px; }
+.live-order small { color: #999; display: block; }
+body.dark-mode .live-order { background: #222; color: #eee; }
+
+/* Stol xaritasi */
+.floor { margin-top: 28px; text-align: center; }
+.floor h4 { letter-spacing: 3px; font-size: 13px; margin-bottom: 4px; }
+.floor-hint { font-size: 12px; color: #888; margin-bottom: 14px; }
+.floor-plan { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 18px; border: 2px dashed #ddd; border-radius: 12px; background: repeating-linear-gradient(45deg, rgba(232,195,0,.05) 0 10px, transparent 10px 20px); }
+.tbl { aspect-ratio: 1; border-radius: 50%; border: 3px solid #2ecc71; background: rgba(46,204,113,.12); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; font-weight: 800; font-size: 15px; color: #333; transition: transform .25s, background .25s; }
+.tbl small { font-size: 10px; font-weight: 600; color: #777; }
+.tbl:hover:not(.taken) { transform: scale(1.12); }
+.tbl.taken { border-color: #e74c3c; background: rgba(231,76,60,.15); cursor: not-allowed; opacity: .6; }
+.tbl.sel { border-color: #e8c300; background: #e8c300; color: #fff; transform: scale(1.12); box-shadow: 0 0 0 6px rgba(232,195,0,.3); }
+.tbl.sel small { color: #fff; }
+.floor-legend { display: flex; justify-content: center; gap: 16px; margin-top: 12px; font-size: 11px; color: #777; flex-wrap: wrap; }
+.floor-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; }
+.floor-sel { margin-top: 10px; font-weight: 700; color: #e8c300; min-height: 22px; }
+body.dark-mode .tbl { color: #eee; } body.dark-mode .floor-plan { border-color: #444; }
+
+/* Taom yomg'iri */
+.food-rain { position: fixed; top: -50px; font-size: 30px; z-index: 99990; pointer-events: none; animation: foodFall linear forwards; }
+@keyframes foodFall { to { transform: translateY(115vh) rotate(540deg); } }
+@media (max-width: 600px) { .live-order { display: none; } }
